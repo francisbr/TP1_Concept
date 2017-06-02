@@ -36,7 +36,9 @@ data Value = VInt Int
 
 instance Show Value where
   show (VInt n) = show n
-  show _ = "<function>"
+  show (VLam s t e) = "<lambda>"
+  show (VPrim f) = "<primitive>"
+--  show _ = "<function>"
 
 instance Eq Value where
   (VInt n1) == (VInt n2) = n1 == n2
@@ -118,7 +120,11 @@ lookupVar (_ : xs) sym = lookupVar xs sym
 eval :: Env -> Exp -> Value
 eval _ (EInt x) = VInt x
 eval env (EVar sym) = lookupVar env sym
-eval _ _ = error "Oups ..."
+eval env (ELam sym ty ex) = error "ELam not implemented yet"
+eval env (EApp ex1 ex2) = do
+    eval env ex1
+    --eval env ex2
+--eval _ _ = error "Oups eval ..."
 
 
 ---------------------------------------------------------------------------
@@ -139,4 +145,7 @@ lookupType (_ : xs) sym = lookupType xs sym
 typeCheck :: Tenv -> Exp -> Either Error Type
 typeCheck _ (EInt x) = Right TInt
 typeCheck env (EVar sym) = lookupType env sym
-typeCheck _ _ = error "Oups ..."
+typeCheck env (EApp ex1 ex2) = do
+    typeCheck env ex1
+    typeCheck env ex2
+typeCheck _ _ = error "Oups typeCheck ..."
