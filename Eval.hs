@@ -120,7 +120,8 @@ lookupVar (_ : xs) sym = lookupVar xs sym
 eval :: Env -> Exp -> Value
 eval _ (EInt x) = VInt x
 eval env (EVar sym) = lookupVar env sym
-eval env (ELam sym ty ex) = error "ELam not implemented yet"
+-- Jpense quil faut que creer un nouvel Env pour passer a eval. (similaire, voir: typeCheck pour ELam.)
+eval env (ELam sym ty ex) = eval env ex 
 eval env (EApp ex1 ex2) = 
     case eval env ex1 of
         VInt x -> VInt x
@@ -150,5 +151,8 @@ typeCheck env (EVar sym) = lookupType env sym
 typeCheck env (EApp ex1 ex2) = do
     typeCheck env ex1
     typeCheck env ex2
-typeCheck env (ELam sym typ ex) = error "Lambda not implemented yet"
+typeCheck env (ELam sym typ ex) =
+    let
+        nouvEnv = [(sym, typ)]
+        in typeCheck nouvEnv ex
 --typeCheck _ _ = error "Oups typeCheck ..."
