@@ -123,7 +123,7 @@ eval env (EVar sym) = lookupVar env sym
 eval env (ELam sym ty ex) = error "ELam not implemented yet"
 eval env (EApp ex1 ex2) = 
     case eval env ex1 of
-        VInt x -> eval env ex1
+        VInt x -> VInt x
         VPrim x -> x (eval env ex2)
     --eval env ex2
 --eval _ _ = error "Oups eval ..."
