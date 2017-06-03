@@ -148,4 +148,5 @@ typeCheck env (EVar sym) = lookupType env sym
 typeCheck env (EApp ex1 ex2) = do
     typeCheck env ex1
     typeCheck env ex2
-typeCheck _ _ = error "Oups typeCheck ..."
+typeCheck env (ELam sym typ ex) = error "Lambda not implemented yet"
+--typeCheck _ _ = error "Oups typeCheck ..."
